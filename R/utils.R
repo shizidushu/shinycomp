@@ -1,3 +1,24 @@
+#' Remove the URL query
+#'
+#' Remove the entire query string from the url.  This function should only be called
+#' inside the server function of your 'shiny' app.
+#'
+#' @param session the Shiny session
+#'
+#' @importFrom shiny updateQueryString getDefaultReactiveDomain
+#'
+#' @export
+#'
+#'
+remove_query_string <- function(session = shiny::getDefaultReactiveDomain()) {
+
+  shiny::updateQueryString(
+    session$clientData$url_pathname,
+    mode = "replace",
+    session = session
+  )
+}
+
 #' Get a cookie value by name from a cookie string
 #'
 #' @param cookie_string the cookie string

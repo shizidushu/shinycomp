@@ -17,8 +17,19 @@ loginUI <- function(id, title = "请登录", user_title = "用户名", pass_titl
                     login_title = "登录", error_message="用户名或密码错误") {
   ns <- shiny::NS(id)
 
+  jsCode <- 'shinyjs.settokencookie = function(token) {
+    Cookies.set("token", escape(token), { expires: 1 });
+  }
+  shinyjs.rmtokencookie = function() {
+    Cookies.remove("token");
+  }
+  '
+
   shiny::div(id = ns("panel"), style = "width: 500px; max-width: 100%; margin: 0 auto; padding: 20px;",
              shiny::wellPanel(
+               singleton(tags$head(tags$script(src = "shinytvc/js.cookie-2.2.1.min.js"))),
+               useShinyjs(),
+               extendShinyjs(text = jsCode),
                shiny::tags$h2(title, class = "text-center", style = "padding-top: 0;"),
 
                shiny::textInput(ns("user_name"), shiny::tagList(shiny::icon("user"), user_title)),
@@ -41,13 +52,8 @@ loginUI <- function(id, title = "请登录", user_title = "用户名", pass_titl
 
 
 
-loginServer <- function(id, log_out = NULL) {
+loginServer <- function(id) {
   moduleServer(id, function(input, output, session) {
-
-    shiny::observeEvent(log_out(), {
-
-      shiny::updateTextInput(session, "password", value = "")
-    })
 
     shiny::observeEvent(input$button, {
       username <- input$user_name
@@ -59,8 +65,10 @@ loginServer <- function(id, log_out = NULL) {
         httr::accept_json(),
         body = list(username= username, password=password), encode = "form")
       if (httr::status_code(resp) == 200) {
-        token <- content(resp)$access_token
-        # write token to cookie?
+        token <- httr::content(resp)$access_token
+        shinyjs::js$settokencookie(token)
+        remove_query_string()
+        session$reload()
       } else {
         shinyjs::toggle(id = "error", anim = TRUE, time = 1, animType = "fade")
         shinyjs::delay(5000, shinyjs::toggle(id = "error", anim = TRUE, time = 1, animType = "fade"))
