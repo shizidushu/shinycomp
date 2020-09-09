@@ -10,7 +10,8 @@ Authors@R:
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Suggests: 
-    testthat
+    testthat,
+    roxygen2
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -20,4 +21,10 @@ Imports:
     waiter,
     shinyjs,
     httr,
-    jsonlite
+    jsonlite,
+    rlang (>= 0.1.2),
+    DT,
+    dplyr,
+    stringr,
+    stringi,
+    shinydisconnect

@@ -29,7 +29,7 @@ secure_ui  <- function(ui, ...) {
 
     # show log in page if token is null and login is allowed
     if (is.null(token)) {
-      if (getOption('shinycomp.openlogin', TRUE)) {
+      if (getOption('shinycomp.openlogin', FALSE)) {
         return(loginUI(id = "login"))
       } else {
         return("Unauthorized")
