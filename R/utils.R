@@ -5,13 +5,10 @@
 #'
 #' @param session the Shiny session
 #'
-#' @importFrom shiny updateQueryString getDefaultReactiveDomain
-#'
 #' @export
 #'
 #'
 remove_query_string <- function(session = shiny::getDefaultReactiveDomain()) {
-
   shiny::updateQueryString(
     session$clientData$url_pathname,
     mode = "replace",
@@ -46,7 +43,10 @@ get_cookie <- function(cookie_string, name) {
 #'
 #' @param token token to be verified
 get_user_df <- function(token) {
-  resp <- httr::GET(getOption('shinycomp.verify_token_api_url', 'http://fastapi/api/v1/verify_xtoken'), query = list(xtoken = token))
+  resp <- httr::GET(
+    url = getOption('shinycomp.get_userinfo_url', 'http://fastapi/api/v1/get_user_info_by_apitoken'),
+    query = list(apitoken = token)
+    )
   df <- jsonlite::fromJSON(httr::content(resp, "text", encoding="UTF-8"), simplifyDataFrame  = TRUE)
   df
 }

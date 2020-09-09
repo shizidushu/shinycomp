@@ -27,11 +27,10 @@ secure_ui  <- function(ui, ...) {
       token <- token_from_cookie
     }
 
-    # show log in page if token is null
-    # Not Implemented!
+    # show log in page if token is null and login is allowed
     if (is.null(token)) {
-      if (getOption('shinycomp.openlogin', FALSE)) {
-        return("Login page")
+      if (getOption('shinycomp.openlogin', TRUE)) {
+        return(loginUI(id = "login"))
       } else {
         return("Unauthorized")
       }
@@ -43,9 +42,9 @@ secure_ui  <- function(ui, ...) {
     if (!is_valid) {
       return (
         tagList(
-          singleton(tags$head(tags$script(src = "shinycomp/assest/js.cookie-2.2.1.min.js"))),
-          tags$script("Cookies.remove('token')"),
-          tags$p("token is invalid")
+          singleton(shiny::tags$head(shiny::tags$script(src = "https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"))),
+          shiny::tags$script("Cookies.remove('token')"),
+          shiny::tags$p("token is invalid")
         )
       )
     }
@@ -56,20 +55,20 @@ secure_ui  <- function(ui, ...) {
     }
     return (
       tagList(
-        singleton(tags$head(tags$script(src = "shinytvc/js.cookie-2.2.1.min.js"))),
-        tags$script(paste0("
+        singleton(shiny::tags$head(shiny::tags$script(src = "https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"))),
+        shiny::tags$script(paste0("
             Cookies.set(
               'token',
               '", token, "',
               { expires: 1 } // set cookie to expire in 1 day
             );
           ")),
-        tags$div(
+        shiny::tags$div(
           style = "display: none;",
           textInput('token', label = NULL, value = token)
         ),
         waiter::use_waiter(),
-        waiter::waiter_show_on_load(),
+        waiter::waiter_show_on_load(waiter::spin_3circles(), color = "#ffffff"),
         shinydisconnect::disconnectMessage(
           text = "您的会话已超时, 刷新页面可重新查看",
           refresh = "现在刷新",
@@ -96,6 +95,7 @@ secure_ui  <- function(ui, ...) {
 secure_server <- function(server, ...) {
   server <- force(server)
   function(input, output, session) {
+    loginServer(id = "login")
     session$userData$user <- shiny::reactiveVal(NULL)
     shiny::observe({
       user_df <- get_user_df(input$token)
