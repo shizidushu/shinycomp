@@ -2,17 +2,15 @@
 % Please edit documentation in R/table.R
 \name{c_datatable}
 \alias{c_datatable}
-\title{Create an HTML table widget using the DataTables library with Chinese menu}
+\title{Set defaults for function
+Create an HTML table widget using the DataTables library with Chinese menu}
 \usage{
 c_datatable(...)
 }
 \arguments{
-\item{pageLength}{the length of page}
-
-\item{lengthMenu}{the menu of length}
-
-\item{buttons}{buttons shows}
+\item{...}{Arguments to \code{DT::datatable}}
 }
 \description{
+Set defaults for function
 Create an HTML table widget using the DataTables library with Chinese menu
 }

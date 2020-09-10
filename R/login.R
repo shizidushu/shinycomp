@@ -7,6 +7,7 @@
 #' @param user_title label for the user name text input
 #' @param pass_title label for the password text input
 #' @param login_title label for the login button
+#' @param error_message error messsage when failed.
 #'
 #' @return Shiny UI
 #'
@@ -26,7 +27,7 @@ loginUI <- function(id, title = "请登录", user_title = "用户名", pass_titl
   shiny::div(id = ns("panel"), style = "width: 500px; max-width: 100%; margin: 0 auto; padding: 20px;",
              shiny::fluidPage(
                shiny::wellPanel(
-                 singleton(shiny::tags$head(shiny::tags$script(src = "https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"))),
+                 htmltools::singleton(shiny::tags$head(shiny::tags$script(src = "https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"))),
                  shinyjs::useShinyjs(),
                  shinyjs::extendShinyjs(text = jsCode),
                  shiny::tags$h2(title, class = "text-center", style = "padding-top: 0;"),

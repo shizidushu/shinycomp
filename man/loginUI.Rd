@@ -23,6 +23,8 @@ loginUI(
 \item{pass_title}{label for the password text input}
 
 \item{login_title}{label for the login button}
+
+\item{error_message}{error messsage when failed.}
 }
 \value{
 Shiny UI

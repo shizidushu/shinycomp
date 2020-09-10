@@ -4,14 +4,30 @@
 \alias{fix_image_link}
 \title{Add image url prefix to image column}
 \usage{
-fix_image_link(df, df_image_title_col_name, df_image_url_col_name)
+fix_image_link(
+  df,
+  df_image_url_col_name = "图片",
+  df_image_title_col_name = "SKU",
+  image_pattern = ".*.[a-z]+",
+  sku_image_url_prefix_1 = getOption("sku_image_url_prefix_1"),
+  title_pattern_for_prefix_2 = "^C.*",
+  sku_image_url_prefix_2 = getOption("sku_image_url_prefix_2")
+)
 }
 \arguments{
 \item{df}{a tbl or dataframe}
 
-\item{df_image_url_col_name}{the colname of image url column}
+\item{df_image_url_col_name}{Column name of image url}
 
-\item{image_url_prefix}{the prefix for the image url column}
+\item{df_image_title_col_name}{Column name of image title}
+
+\item{image_pattern}{Only fix image with this pattern; set others to \code{NA_character_}}
+
+\item{sku_image_url_prefix_1}{image url prefix 1}
+
+\item{title_pattern_for_prefix_2}{When the title column has this pattern, fix with image url prefix 2. Otherwise fix with image url prefix 1.}
+
+\item{sku_image_url_prefix_2}{image url prefix 2}
 }
 \value{
 df

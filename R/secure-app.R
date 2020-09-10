@@ -41,8 +41,8 @@ secure_ui  <- function(ui, ...) {
     # if token is not valid
     if (!is_valid) {
       return (
-        tagList(
-          singleton(shiny::tags$head(shiny::tags$script(src = "https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"))),
+        shiny::tagList(
+          htmltools::singleton(shiny::tags$head(shiny::tags$script(src = "https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"))),
           shiny::tags$script("Cookies.remove('token')"),
           shiny::tags$p("token is invalid")
         )
@@ -54,8 +54,8 @@ secure_ui  <- function(ui, ...) {
       ui <- ui(request)
     }
     return (
-      tagList(
-        singleton(shiny::tags$head(shiny::tags$script(src = "https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"))),
+      shiny::tagList(
+        htmltools::singleton(shiny::tags$head(shiny::tags$script(src = "https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"))),
         shiny::tags$script(paste0("
             Cookies.set(
               'token',
@@ -65,7 +65,7 @@ secure_ui  <- function(ui, ...) {
           ")),
         shiny::tags$div(
           style = "display: none;",
-          textInput('token', label = NULL, value = token)
+          shiny::textInput('token', label = NULL, value = token)
         ),
         waiter::use_waiter(),
         waiter::waiter_show_on_load(waiter::spin_3circles(), color = "#ffffff"),

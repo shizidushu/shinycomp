@@ -27,4 +27,19 @@ Imports:
     dplyr,
     stringr,
     stringi,
-    shinydisconnect
+    shinydisconnect,
+    tibble,
+    purrr,
+    openxlsx,
+    utils,
+    stats,
+    magrittr,
+    curl,
+    htmltools
+Collate:
+    'utils-pipe.R'
+    'utils-tidy-eval.R'
+    'utils.R'
+    'login.R'
+    'secure-app.R'
+    'table.R'
